@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      certificates: {
+        Row: {
+          created_at: string
+          credential_url: string | null
+          description: string
+          display_order: number
+          id: string
+          image_url: string | null
+          issue_date: string | null
+          issuer: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          credential_url?: string | null
+          description?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          issue_date?: string | null
+          issuer: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          credential_url?: string | null
+          description?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          issue_date?: string | null
+          issuer?: string
+          name?: string
+        }
+        Relationships: []
+      }
       experiences: {
         Row: {
           company: string
