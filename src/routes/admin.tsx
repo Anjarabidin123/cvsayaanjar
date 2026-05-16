@@ -40,6 +40,7 @@ function AdminLayout() {
     { to: "/admin/experiences", label: "Pengalaman" },
     { to: "/admin/projects", label: "Proyek" },
     { to: "/admin/skills", label: "Skill" },
+    { to: "/admin/certificates", label: "Sertifikat" },
   ];
 
   return (
