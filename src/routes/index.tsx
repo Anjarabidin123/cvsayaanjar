@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Github, Linkedin, Mail, MapPin, ExternalLink, Twitter } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin, Mail, MapPin, ExternalLink, Twitter, Award } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { BatikPattern } from "@/components/BatikPattern";
 
@@ -18,17 +18,19 @@ export const Route = createFileRoute("/")({
 type SocialLinks = { linkedin?: string; github?: string; twitter?: string };
 
 async function fetchPortfolio() {
-  const [profile, experiences, projects, skills] = await Promise.all([
+  const [profile, experiences, projects, skills, certificates] = await Promise.all([
     supabase.from("profiles").select("*").limit(1).maybeSingle(),
     supabase.from("experiences").select("*").order("display_order"),
     supabase.from("projects").select("*").order("display_order"),
     supabase.from("skills").select("*").order("display_order"),
+    supabase.from("certificates").select("*").order("display_order"),
   ]);
   return {
     profile: profile.data,
     experiences: experiences.data ?? [],
     projects: projects.data ?? [],
     skills: skills.data ?? [],
+    certificates: certificates.data ?? [],
   };
 }
 
@@ -39,7 +41,7 @@ function HomePage() {
     return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Memuat...</div>;
   }
 
-  const { profile, experiences, projects, skills } = data;
+  const { profile, experiences, projects, skills, certificates } = data;
   const social = (profile?.social_links ?? {}) as SocialLinks;
 
   const skillsByCategory = skills.reduce<Record<string, typeof skills>>((acc, s) => {
@@ -69,6 +71,7 @@ function HomePage() {
             <a href="#experience" className="hover:text-primary transition-colors">Pengalaman</a>
             <a href="#projects" className="hover:text-primary transition-colors">Proyek</a>
             <a href="#skills" className="hover:text-primary transition-colors">Keahlian</a>
+            <a href="#certificates" className="hover:text-primary transition-colors">Sertifikat</a>
             <a href="#contact" className="hover:text-primary transition-colors">Kontak</a>
           </nav>
           <Link to="/login" className="text-xs text-muted-foreground hover:text-primary transition-colors">
@@ -243,6 +246,61 @@ function HomePage() {
         </div>
       </section>
 
+      <Divider label="04 — Sertifikat" />
+
+      {/* Certificates */}
+      <section id="certificates" className="relative py-24 px-6">
+        <div className="pointer-events-none absolute -left-10 bottom-0 w-72 h-72 text-primary">
+          <BatikPattern variant="kawung" opacity={0.12} />
+        </div>
+        <div className="relative max-w-6xl mx-auto">
+          {certificates.length === 0 ? (
+            <p className="text-muted-foreground italic text-center">Belum ada sertifikat ditambahkan.</p>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {certificates.map((c, i) => (
+                <motion.article
+                  key={c.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  className="group relative bg-card/80 backdrop-blur-sm border border-primary/20 hover:border-primary/60 transition-all overflow-hidden flex flex-col"
+                >
+                  {c.image_url ? (
+                    <div className="aspect-[4/3] overflow-hidden bg-secondary">
+                      <img src={c.image_url} alt={c.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    </div>
+                  ) : (
+                    <div className="aspect-[4/3] flex items-center justify-center bg-secondary/50 text-primary/60">
+                      <Award className="w-16 h-16" strokeWidth={1} />
+                    </div>
+                  )}
+                  <div className="p-6 flex flex-col flex-1">
+                    <div className="flex items-start gap-2 mb-2">
+                      <Award className="w-4 h-4 text-primary mt-1 shrink-0" />
+                      <h3 className="font-display text-xl leading-tight">{c.name}</h3>
+                    </div>
+                    <p className="text-primary text-sm italic mb-3">{c.issuer}</p>
+                    {c.description && (
+                      <p className="text-muted-foreground text-sm leading-relaxed mb-4 flex-1">{c.description}</p>
+                    )}
+                    <div className="flex items-center justify-between text-xs text-muted-foreground uppercase tracking-wider mt-auto pt-3 border-t border-primary/15">
+                      <span>{c.issue_date ? formatMonthYear(c.issue_date) : "—"}</span>
+                      {c.credential_url && (
+                        <a href={c.credential_url} target="_blank" rel="noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">
+                          Lihat <ExternalLink className="w-3 h-3" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* Footer */}
       <footer id="contact" className="relative py-32 px-6 border-t border-primary/20 mt-24 overflow-hidden">
         <div className="pointer-events-none absolute inset-0 text-primary">
@@ -294,4 +352,8 @@ function BatikGlyph({ className }: { className?: string }) {
 
 function formatYear(d: string) {
   return new Date(d).getFullYear().toString();
+}
+
+function formatMonthYear(d: string) {
+  return new Date(d).toLocaleDateString("id-ID", { month: "short", year: "numeric" });
 }
