@@ -17,6 +17,7 @@ import { Route as AdminSkillsRouteImport } from './routes/admin.skills'
 import { Route as AdminProjectsRouteImport } from './routes/admin.projects'
 import { Route as AdminProfileRouteImport } from './routes/admin.profile'
 import { Route as AdminExperiencesRouteImport } from './routes/admin.experiences'
+import { Route as AdminEducationRouteImport } from './routes/admin.education'
 import { Route as AdminCertificatesRouteImport } from './routes/admin.certificates'
 
 const LoginRoute = LoginRouteImport.update({
@@ -59,6 +60,11 @@ const AdminExperiencesRoute = AdminExperiencesRouteImport.update({
   path: '/experiences',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminEducationRoute = AdminEducationRouteImport.update({
+  id: '/education',
+  path: '/education',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminCertificatesRoute = AdminCertificatesRouteImport.update({
   id: '/certificates',
   path: '/certificates',
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/admin/certificates': typeof AdminCertificatesRoute
+  '/admin/education': typeof AdminEducationRoute
   '/admin/experiences': typeof AdminExperiencesRoute
   '/admin/profile': typeof AdminProfileRoute
   '/admin/projects': typeof AdminProjectsRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/admin/certificates': typeof AdminCertificatesRoute
+  '/admin/education': typeof AdminEducationRoute
   '/admin/experiences': typeof AdminExperiencesRoute
   '/admin/profile': typeof AdminProfileRoute
   '/admin/projects': typeof AdminProjectsRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/admin/certificates': typeof AdminCertificatesRoute
+  '/admin/education': typeof AdminEducationRoute
   '/admin/experiences': typeof AdminExperiencesRoute
   '/admin/profile': typeof AdminProfileRoute
   '/admin/projects': typeof AdminProjectsRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/login'
     | '/admin/certificates'
+    | '/admin/education'
     | '/admin/experiences'
     | '/admin/profile'
     | '/admin/projects'
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/admin/certificates'
+    | '/admin/education'
     | '/admin/experiences'
     | '/admin/profile'
     | '/admin/projects'
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/login'
     | '/admin/certificates'
+    | '/admin/education'
     | '/admin/experiences'
     | '/admin/profile'
     | '/admin/projects'
@@ -197,6 +209,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminExperiencesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/education': {
+      id: '/admin/education'
+      path: '/education'
+      fullPath: '/admin/education'
+      preLoaderRoute: typeof AdminEducationRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/certificates': {
       id: '/admin/certificates'
       path: '/certificates'
@@ -209,6 +228,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminCertificatesRoute: typeof AdminCertificatesRoute
+  AdminEducationRoute: typeof AdminEducationRoute
   AdminExperiencesRoute: typeof AdminExperiencesRoute
   AdminProfileRoute: typeof AdminProfileRoute
   AdminProjectsRoute: typeof AdminProjectsRoute
@@ -218,6 +238,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminCertificatesRoute: AdminCertificatesRoute,
+  AdminEducationRoute: AdminEducationRoute,
   AdminExperiencesRoute: AdminExperiencesRoute,
   AdminProfileRoute: AdminProfileRoute,
   AdminProjectsRoute: AdminProjectsRoute,
@@ -235,13 +256,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

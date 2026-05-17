@@ -50,6 +50,42 @@ export type Database = {
         }
         Relationships: []
       }
+      education: {
+        Row: {
+          created_at: string
+          degree: string
+          description: string
+          display_order: number
+          end_year: number | null
+          field: string
+          id: string
+          institution: string
+          start_year: number | null
+        }
+        Insert: {
+          created_at?: string
+          degree?: string
+          description?: string
+          display_order?: number
+          end_year?: number | null
+          field?: string
+          id?: string
+          institution: string
+          start_year?: number | null
+        }
+        Update: {
+          created_at?: string
+          degree?: string
+          description?: string
+          display_order?: number
+          end_year?: number | null
+          field?: string
+          id?: string
+          institution?: string
+          start_year?: number | null
+        }
+        Relationships: []
+      }
       experiences: {
         Row: {
           company: string
@@ -80,6 +116,36 @@ export type Database = {
           id?: string
           role?: string
           start_date?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          is_read: boolean
+          message: string
+          name: string
+          subject: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          is_read?: boolean
+          message: string
+          name: string
+          subject?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          is_read?: boolean
+          message?: string
+          name?: string
+          subject?: string
         }
         Relationships: []
       }
@@ -185,6 +251,42 @@ export type Database = {
           id?: string
           name?: string
           proficiency?: number
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          avatar_url: string | null
+          company: string
+          created_at: string
+          display_order: number
+          id: string
+          name: string
+          quote: string
+          rating: number
+          role: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          company?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          name: string
+          quote?: string
+          rating?: number
+          role?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          company?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          name?: string
+          quote?: string
+          rating?: number
+          role?: string
         }
         Relationships: []
       }

@@ -65,26 +65,26 @@
 
 :root {
   --radius: 0.625rem;
-  /* Batik Heritage — Sogan brown, indigo, gold, cream */
-  --background: oklch(0.16 0.02 50);
-  --foreground: oklch(0.95 0.03 80);
-  --card: oklch(0.21 0.03 50);
-  --card-foreground: oklch(0.95 0.03 80);
-  --popover: oklch(0.21 0.03 50);
-  --popover-foreground: oklch(0.95 0.03 80);
-  --primary: oklch(0.78 0.14 75);
-  --primary-foreground: oklch(0.16 0.02 50);
-  --secondary: oklch(0.28 0.05 45);
-  --secondary-foreground: oklch(0.95 0.03 80);
-  --muted: oklch(0.25 0.03 50);
-  --muted-foreground: oklch(0.72 0.04 75);
-  --accent: oklch(0.55 0.15 30);
-  --accent-foreground: oklch(0.96 0.02 80);
+  /* Heritage Modern — Putih kertas, Indigo Nusantara, Emas hangat */
+  --background: oklch(0.99 0.003 90);
+  --foreground: oklch(0.22 0.04 260);
+  --card: oklch(0.985 0.005 85);
+  --card-foreground: oklch(0.22 0.04 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.04 260);
+  --primary: oklch(0.32 0.08 260);
+  --primary-foreground: oklch(0.99 0.003 90);
+  --secondary: oklch(0.96 0.01 85);
+  --secondary-foreground: oklch(0.22 0.04 260);
+  --muted: oklch(0.95 0.008 85);
+  --muted-foreground: oklch(0.5 0.02 260);
+  --accent: oklch(0.72 0.12 80);
+  --accent-foreground: oklch(0.22 0.04 260);
   --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.4 0.05 60 / 50%);
-  --input: oklch(0.28 0.04 50);
-  --ring: oklch(0.78 0.14 75);
+  --border: oklch(0.32 0.08 260 / 14%);
+  --input: oklch(0.32 0.08 260 / 18%);
+  --ring: oklch(0.32 0.08 260);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -100,8 +100,9 @@
   --sidebar-ring: oklch(0.78 0.13 85);
   --font-display: 'Playfair Display', 'Cormorant Garamond', ui-serif, Georgia, serif;
   --font-sans: 'Karla', ui-sans-serif, system-ui, sans-serif;
-  --gradient-gold: linear-gradient(135deg, oklch(0.78 0.14 75), oklch(0.55 0.15 30));
-  --batik-ink: oklch(0.78 0.14 75 / 0.18);
+  --gradient-gold: linear-gradient(135deg, oklch(0.72 0.12 80), oklch(0.55 0.15 50));
+  --indigo-ink: oklch(0.32 0.08 260 / 0.1);
+  --gold-ink: oklch(0.72 0.12 80 / 0.18);
 }
 
 .dark {
@@ -157,7 +158,12 @@
   }
 
   ::selection {
-    background: oklch(0.78 0.13 85 / 30%);
-    color: oklch(0.96 0.01 90);
+    background: oklch(0.72 0.12 80 / 35%);
+    color: oklch(0.22 0.04 260);
   }
+}
+
+@media print {
+  body { background: white; color: black; }
+  .no-print { display: none !important; }
 }
