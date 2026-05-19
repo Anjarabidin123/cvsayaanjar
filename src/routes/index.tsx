@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { NusantaraPattern, NusantaraGlyph, GununganOrnament, SulurDivider } from "@/components/NusantaraOrnament";
-import { useI18n } from "@/lib/i18n";
+import { useI18n, type DictKey } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -260,7 +260,7 @@ function HomePage() {
   const socialLinks = (profile?.social_links ?? {}) as any;
 
   const handleDownloadCV = () => {
-    const sl = profile?.social_links || {};
+    const sl = (profile?.social_links || {}) as any;
     const cvUrl = lang === "id" ? sl.cv_url_id : sl.cv_url_en;
     if (cvUrl) {
       window.open(cvUrl, "_blank");
@@ -1135,7 +1135,7 @@ function formatMonthYear(d: string, lang: "id" | "en") {
 
 /* ---------- NavBar with Mobile Menu & Dark Mode ---------- */
 
-function NavBar({ profile, lang, setLang, t }: { profile: any; lang: "id" | "en"; setLang: (l: "id" | "en") => void; t: (k: string) => string }) {
+function NavBar({ profile, lang, setLang, t }: { profile: any; lang: "id" | "en"; setLang: (l: "id" | "en") => void; t: (k: DictKey) => string }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
 

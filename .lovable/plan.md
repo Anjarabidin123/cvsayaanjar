@@ -1,76 +1,112 @@
+## Goal
+Tambah section **Blog/Artikel** + polish **SEO, mobile, performa**, plus seed data dummy biar section yang kosong langsung kelihatan rame.
 
-# Rombak CV — Heritage Modern (Light + Indigo)
+---
 
-## Arah desain baru
+## 1. Blog / Artikel (fitur baru)
 
-Bukan dark mode lagi. Tema **kertas krem-putih** dengan aksen **Indigo Nusantara** (#1e3a5f) dan emas hangat (#c9a84c). Hasilnya: bersih, profesional, mudah dibaca di HP, tapi tetap punya jiwa Indonesia.
+**Database** — tabel baru `posts`:
+- `slug` (text, unique) — buat URL `/blog/cara-belajar-react`
+- `title`, `excerpt`, `content` (markdown), `cover_url`
+- `tags` (text[]), `is_published` (bool), `published_at`, `reading_minutes`
+- RLS: publik baca yg `is_published=true`, admin full access
 
-Motif batik diganti dengan **ornamen Nusantara yang lebih elegan & subtle**:
-- **Ukiran sulur Jepara** sebagai pembatas section (garis tipis emas)
-- **Siluet Gunungan Wayang** sebagai ornamen pojok hero & footer
-- **Pola tenun ikat geometris** tipis di latar (jauh lebih halus dari batik sekarang)
-- Semua ornamen monokrom indigo/emas dengan opacity 6–10% — terasa, tidak mengganggu
+**Routes baru:**
+- `/blog` — daftar artikel (grid cover + judul + excerpt + tag)
+- `/blog/$slug` — detail artikel (render markdown + meta SEO per-artikel)
+- `/admin/posts` — CRUD artikel (editor markdown sederhana + upload cover)
 
-## Yang akan ditambahkan
+**Nav update:** tambah link "Blog" di header utama + admin sidebar.
 
-| Fitur | Detail |
-|---|---|
-| **Download CV (PDF)** | Tombol di hero. Generate PDF on-the-fly dari data Supabase (server function + pdf-lib), layout 1 halaman A4 profesional |
-| **Section Pendidikan** | Tabel `education` baru: institusi, jurusan, gelar, tahun, deskripsi. CRUD admin lengkap |
-| **Section Testimoni** | Tabel `testimonials` baru: nama, jabatan, perusahaan, foto, kutipan, rating. Tampil sebagai carousel |
-| **Form Kontak** | Form di section terakhir. Tabel `messages` simpan inbox. Validasi Zod (name/email/message, length limits). Admin bisa lihat pesan masuk di `/admin/messages` |
-| **Multi-bahasa ID/EN** | Toggle 🇮🇩/🇬🇧 di nav. Pakai context sederhana + dictionary JSON. Konten dinamis (bio, deskripsi) opsional dual-field: `bio` + `bio_en` |
-| **Bonus yang cocok** | **Hero stats counter** (tahun pengalaman, proyek selesai, sertifikat — animated count-up) + **Floating action button** ke WhatsApp/LinkedIn |
+**Markdown rendering:** `react-markdown` + `remark-gfm` (table, checkbox, strikethrough).
 
-## Struktur halaman publik (urutan baru)
+---
 
-```
-Nav (logo • menu • toggle bahasa • Download CV)
-─────────────────────────────
-1. Hero          — nama, title, bio, stats counter, CTA
-2. Pengalaman    — timeline modern
-3. Pendidikan    — kartu sederhana          ← BARU
-4. Proyek        — grid showcase
-5. Keahlian      — progress bars
-6. Sertifikat    — kartu
-7. Testimoni     — carousel                  ← BARU
-8. Kontak        — form + info kontak        ← BARU
-Footer (ornamen gunungan + social)
-```
+## 2. Polish SEO
 
-## Perubahan teknis
+**Per-route `head()` meta** (sekarang cuma di root):
+- `/` → title + description + og dari profil
+- `/blog` → daftar artikel
+- `/blog/$slug` → judul + excerpt + cover sebagai og:image (dynamic dari loader)
+- Canonical URL di tiap leaf route
+- JSON-LD `Person` schema di root (nama, jobTitle, sameAs sosmed)
+- JSON-LD `Article` schema di blog post
 
-**Database (migration baru):**
-- `education` (institution, degree, field, start_year, end_year, description, display_order)
-- `testimonials` (name, role, company, avatar_url, quote, rating, display_order)
-- `messages` (name, email, subject, message, is_read, created_at) — RLS: anyone insert, admin read
+**Tambahan:**
+- `public/robots.txt` allow all + link sitemap
+- Route `/sitemap.xml` — generate dari profil + projects + posts
+- Open Graph image default (generate via imagegen) untuk share di WA/LinkedIn
 
-**Admin routes baru:**
-- `/admin/education`
-- `/admin/testimonials`
-- `/admin/messages` (inbox, mark as read, hapus)
+---
 
-**Komponen baru:**
-- `src/components/NusantaraOrnament.tsx` (gantikan `BatikPattern.tsx` — sulur, gunungan, tenun)
-- `src/components/LanguageToggle.tsx` + `src/lib/i18n.ts` (dictionary ID/EN)
-- `src/components/StatsCounter.tsx` (animated count-up via framer-motion)
-- `src/components/TestimonialCarousel.tsx`
-- `src/components/ContactForm.tsx` (Zod-validated)
-- `src/components/DownloadCVButton.tsx`
+## 3. Polish Mobile
 
-**Server function baru:**
-- `src/lib/cv-pdf.functions.ts` — generate PDF pakai `pdf-lib` (Worker-compatible). Layout 1 halaman: header nama+kontak, kolom kiri (skills + pendidikan), kolom kanan (pengalaman + proyek pilihan)
+Review section per section di viewport 411px:
+- Hero: stats counter sering overflow, perlu grid 2x2 di HP
+- Project slider 3D: di HP card kiri/kanan terlalu mepet, kurangi rotateY + scale
+- Sertifikat explorer: tab/grid touch target ditambah
+- Form kontak: input height min 44px (Apple HIG)
+- Floating WhatsApp button: posisi jangan nutupin tombol back-to-top
+- Header mobile: hamburger menu yang sekarang panjang, jadikan drawer fullscreen
+- Spacing section: kurangi padding vertikal di mobile (py-32 → py-16)
 
-**Styling (`src/styles.css`):**
-- Reset palette ke light mode: bg `oklch(0.99 0 0)`, foreground indigo gelap, primary indigo `#1e3a5f`, accent gold `#c9a84c`
-- Tetap Playfair Display + Karla (cocok untuk light theme)
-- Bukan `dark` class — pure light
+---
 
-**File yang dihapus:**
-- `src/components/BatikPattern.tsx` (diganti `NusantaraOrnament.tsx`)
+## 4. Polish Performa
 
-## Catatan untuk Anda
+- **Image optimization**: semua upload via `<ImageUpload>` paksa convert ke WebP, max width 1600px
+- **Preload LCP**: hero image / avatar di-preload via `head().links`
+- **Lazy load** sertifikat & testimoni section pakai `IntersectionObserver`
+- **Code split**: pisahkan `framer-motion` heavy components yg di bawah fold
+- **Font loading**: `font-display: swap` (cek di styles.css)
+- **Bundle audit**: cek apakah `ParallaxBackground`, `TiltCard`, `WaveSkillBar` benar-benar dipakai — drop yg gak kepakai
+- Remove console.log production
 
-- Tema dark sekarang akan **diganti total** ke light mode. Kalau nanti mau toggle dark/light bisa ditambahkan, tapi default light.
-- Multi-bahasa: label UI (nav, judul section, tombol) di-translate via dictionary. Konten yang Anda isi sendiri (bio, deskripsi proyek) tetap satu bahasa — kecuali Anda mau saya tambahkan field `_en` untuk tiap konten (lebih ribet tapi lebih lengkap). **Bisa saya konfirmasi setelah plan disetujui.**
-- Form kontak menyimpan ke database, tidak kirim email (untuk kirim email butuh setup Resend — bisa ditambahkan terpisah kalau perlu).
+---
+
+## 5. Seed Data Dummy
+
+Insert data contoh yg realistis (bisa kamu edit/hapus nanti via /admin):
+- **Profile**: bio sample 2 paragraf
+- **Experiences**: 2 pengalaman dummy (Frontend Dev, Intern UI/UX)
+- **Education**: 2 (SMK + Universitas)
+- **Projects**: 3 proyek dummy dengan placeholder image
+- **Skills**: 8 skill umum (React, TS, Tailwind, dll)
+- **Certificates**: 2 sertifikat sample
+- **Testimonials**: 2 testimoni dummy
+- **Posts**: 2 artikel blog sample ("Cara saya belajar React" + "Setup Tailwind v4")
+
+---
+
+## File changes
+
+**New:**
+- `supabase/migrations/...` — tabel `posts` + seed insert
+- `src/routes/blog.tsx`, `src/routes/blog.$slug.tsx`
+- `src/routes/admin.posts.tsx`
+- `src/routes/sitemap[.]xml.ts` — server route
+- `public/robots.txt`
+- `src/components/MarkdownEditor.tsx` (admin)
+- `src/lib/seo.ts` — helper meta generator
+
+**Edit:**
+- `src/routes/__root.tsx` — JSON-LD Person, default og
+- `src/routes/index.tsx` — head() meta, mobile spacing fix, lazy load
+- `src/routes/admin.tsx` — nav link Blog
+- `src/components/ImageUpload.tsx` — WebP conversion
+- `src/styles.css` — font-display swap, mobile spacing tokens
+
+**Dependency baru:** `react-markdown`, `remark-gfm`
+
+---
+
+## Urutan eksekusi
+
+1. Migration tabel `posts` + seed dummy data semua tabel
+2. Blog routes + admin CRUD
+3. SEO: head() per route + sitemap + JSON-LD
+4. Mobile polish (review section by section)
+5. Performa: WebP, preload, lazy load
+6. QA akhir di viewport HP
+
+Estimasi: cukup besar, mungkin perlu split jadi 2 batch (Blog+SEO dulu, lalu Mobile+Performa+Seed). Mau aku kerjain sekaligus atau pisah?

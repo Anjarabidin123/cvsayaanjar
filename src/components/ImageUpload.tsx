@@ -68,7 +68,7 @@ export function ImageUpload({ value, onChange, label = "Pilih Gambar" }: ImageUp
       toast.success("Gambar berhasil diunggah!");
     } catch (error) {
       console.error("Error uploading image:", error);
-      toast.toast ? toast.toast({ description: "Gagal mengunggah gambar" }) : toast.error("Gagal mengunggah gambar");
+      toast.error("Gagal mengunggah gambar");
     } finally {
       setUploading(false);
     }
