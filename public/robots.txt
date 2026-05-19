@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /abidlogin
+
+Sitemap: https://cvsayaanjar.lovable.app/sitemap.xml
