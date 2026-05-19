@@ -11,9 +11,9 @@ interface Certificate {
   name: string;
   issuer: string;
   description: string;
-  image_url?: string;
-  credential_url?: string;
-  issue_date?: string;
+  image_url?: string | null;
+  credential_url?: string | null;
+  issue_date?: string | null;
 }
 
 interface CertificateExplorerProps {

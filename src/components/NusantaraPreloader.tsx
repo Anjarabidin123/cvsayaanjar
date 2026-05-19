@@ -55,6 +55,7 @@ export function NusantaraPreloader({ onFinished }: { onFinished: () => void }) {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d")!;
+    const cv = canvas;
     let rafId: number;
 
     const resize = () => {
@@ -73,7 +74,7 @@ export function NusantaraPreloader({ onFinished }: { onFinished: () => void }) {
     }));
 
     function render() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, cv.width, cv.height);
 
       // Update particles
       for (let i = 0; i < particles.length; i++) {
@@ -81,8 +82,8 @@ export function NusantaraPreloader({ onFinished }: { onFinished: () => void }) {
         p.x += p.vx;
         p.y += p.vy;
 
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        if (p.x < 0 || p.x > cv.width) p.vx *= -1;
+        if (p.y < 0 || p.y > cv.height) p.vy *= -1;
 
         // Draw dot
         ctx.fillStyle = "rgba(220, 180, 100, 0.8)";
