@@ -15,7 +15,7 @@ function AdminLayout() {
   const { location } = useRouterState();
 
   useEffect(() => {
-    if (!loading && !user) navigate({ to: "/login" });
+    if (!loading && !user) navigate({ to: "/abidlogin" });
   }, [loading, user, navigate]);
 
   if (loading || !user) {
@@ -28,7 +28,7 @@ function AdminLayout() {
         <div>
           <h1 className="font-display text-4xl mb-3">Akses Ditolak</h1>
           <p className="text-muted-foreground mb-6">Akun Anda bukan admin.</p>
-          <Button onClick={() => supabase.auth.signOut().then(() => navigate({ to: "/login" }))}>Keluar</Button>
+          <Button onClick={() => supabase.auth.signOut().then(() => navigate({ to: "/abidlogin" }))}>Keluar</Button>
         </div>
       </div>
     );
@@ -38,9 +38,11 @@ function AdminLayout() {
     { to: "/admin", label: "Dashboard" },
     { to: "/admin/profile", label: "Profil" },
     { to: "/admin/experiences", label: "Pengalaman" },
+    { to: "/admin/education", label: "Pendidikan" },
     { to: "/admin/projects", label: "Proyek" },
     { to: "/admin/skills", label: "Skill" },
     { to: "/admin/certificates", label: "Sertifikat" },
+    { to: "/admin/testimonials", label: "Testimoni" },
   ];
 
   return (

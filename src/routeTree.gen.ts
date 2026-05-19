@@ -9,10 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LoginRouteImport } from './routes/login'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AbidloginRouteImport } from './routes/abidlogin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminTestimonialsRouteImport } from './routes/admin.testimonials'
 import { Route as AdminSkillsRouteImport } from './routes/admin.skills'
 import { Route as AdminProjectsRouteImport } from './routes/admin.projects'
 import { Route as AdminProfileRouteImport } from './routes/admin.profile'
@@ -20,14 +21,14 @@ import { Route as AdminExperiencesRouteImport } from './routes/admin.experiences
 import { Route as AdminEducationRouteImport } from './routes/admin.education'
 import { Route as AdminCertificatesRouteImport } from './routes/admin.certificates'
 
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AbidloginRoute = AbidloginRouteImport.update({
+  id: '/abidlogin',
+  path: '/abidlogin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -38,6 +39,11 @@ const IndexRoute = IndexRouteImport.update({
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminTestimonialsRoute = AdminTestimonialsRouteImport.update({
+  id: '/testimonials',
+  path: '/testimonials',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminSkillsRoute = AdminSkillsRouteImport.update({
@@ -73,98 +79,104 @@ const AdminCertificatesRoute = AdminCertificatesRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/abidlogin': typeof AbidloginRoute
   '/admin': typeof AdminRouteWithChildren
-  '/login': typeof LoginRoute
   '/admin/certificates': typeof AdminCertificatesRoute
   '/admin/education': typeof AdminEducationRoute
   '/admin/experiences': typeof AdminExperiencesRoute
   '/admin/profile': typeof AdminProfileRoute
   '/admin/projects': typeof AdminProjectsRoute
   '/admin/skills': typeof AdminSkillsRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/login': typeof LoginRoute
+  '/abidlogin': typeof AbidloginRoute
   '/admin/certificates': typeof AdminCertificatesRoute
   '/admin/education': typeof AdminEducationRoute
   '/admin/experiences': typeof AdminExperiencesRoute
   '/admin/profile': typeof AdminProfileRoute
   '/admin/projects': typeof AdminProjectsRoute
   '/admin/skills': typeof AdminSkillsRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/abidlogin': typeof AbidloginRoute
   '/admin': typeof AdminRouteWithChildren
-  '/login': typeof LoginRoute
   '/admin/certificates': typeof AdminCertificatesRoute
   '/admin/education': typeof AdminEducationRoute
   '/admin/experiences': typeof AdminExperiencesRoute
   '/admin/profile': typeof AdminProfileRoute
   '/admin/projects': typeof AdminProjectsRoute
   '/admin/skills': typeof AdminSkillsRoute
+  '/admin/testimonials': typeof AdminTestimonialsRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/abidlogin'
     | '/admin'
-    | '/login'
     | '/admin/certificates'
     | '/admin/education'
     | '/admin/experiences'
     | '/admin/profile'
     | '/admin/projects'
     | '/admin/skills'
+    | '/admin/testimonials'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/login'
+    | '/abidlogin'
     | '/admin/certificates'
     | '/admin/education'
     | '/admin/experiences'
     | '/admin/profile'
     | '/admin/projects'
     | '/admin/skills'
+    | '/admin/testimonials'
     | '/admin'
   id:
     | '__root__'
     | '/'
+    | '/abidlogin'
     | '/admin'
-    | '/login'
     | '/admin/certificates'
     | '/admin/education'
     | '/admin/experiences'
     | '/admin/profile'
     | '/admin/projects'
     | '/admin/skills'
+    | '/admin/testimonials'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AbidloginRoute: typeof AbidloginRoute
   AdminRoute: typeof AdminRouteWithChildren
-  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin': {
       id: '/admin'
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/abidlogin': {
+      id: '/abidlogin'
+      path: '/abidlogin'
+      fullPath: '/abidlogin'
+      preLoaderRoute: typeof AbidloginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -179,6 +191,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/testimonials': {
+      id: '/admin/testimonials'
+      path: '/testimonials'
+      fullPath: '/admin/testimonials'
+      preLoaderRoute: typeof AdminTestimonialsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/skills': {
@@ -233,6 +252,7 @@ interface AdminRouteChildren {
   AdminProfileRoute: typeof AdminProfileRoute
   AdminProjectsRoute: typeof AdminProjectsRoute
   AdminSkillsRoute: typeof AdminSkillsRoute
+  AdminTestimonialsRoute: typeof AdminTestimonialsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -243,6 +263,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminProfileRoute: AdminProfileRoute,
   AdminProjectsRoute: AdminProjectsRoute,
   AdminSkillsRoute: AdminSkillsRoute,
+  AdminTestimonialsRoute: AdminTestimonialsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
@@ -250,9 +271,19 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AbidloginRoute: AbidloginRoute,
   AdminRoute: AdminRouteWithChildren,
-  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

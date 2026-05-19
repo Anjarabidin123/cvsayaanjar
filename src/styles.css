@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Karla:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 @import "tailwindcss" source(none);
-@source "../src";
 @import "tw-animate-css";
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Karla:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@source "../src";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -65,82 +65,86 @@
 
 :root {
   --radius: 0.625rem;
-  /* Heritage Modern — Putih kertas, Indigo Nusantara, Emas hangat */
-  --background: oklch(0.99 0.003 90);
-  --foreground: oklch(0.22 0.04 260);
-  --card: oklch(0.985 0.005 85);
-  --card-foreground: oklch(0.22 0.04 260);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.04 260);
-  --primary: oklch(0.32 0.08 260);
-  --primary-foreground: oklch(0.99 0.003 90);
-  --secondary: oklch(0.96 0.01 85);
-  --secondary-foreground: oklch(0.22 0.04 260);
-  --muted: oklch(0.95 0.008 85);
-  --muted-foreground: oklch(0.5 0.02 260);
-  --accent: oklch(0.72 0.12 80);
-  --accent-foreground: oklch(0.22 0.04 260);
+  /* Bright Nusantara — Beige Hangat, Deep Espresso, Terracotta, Emas */
+  --background: oklch(0.96 0.015 80);
+  --foreground: oklch(0.30 0.03 45);
+  --card: oklch(0.98 0.01 85);
+  --card-foreground: oklch(0.30 0.03 45);
+  --popover: oklch(0.98 0.01 85);
+  --popover-foreground: oklch(0.30 0.03 45);
+  --primary: oklch(0.30 0.03 45);
+  --primary-foreground: oklch(0.96 0.015 80);
+  --secondary: oklch(0.93 0.02 80);
+  --secondary-foreground: oklch(0.30 0.03 45);
+  --muted: oklch(0.93 0.02 80);
+  --muted-foreground: oklch(0.55 0.03 45);
+  --accent: oklch(0.60 0.16 40);
+  --accent-foreground: oklch(0.98 0.01 85);
   --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.32 0.08 260 / 14%);
-  --input: oklch(0.32 0.08 260 / 18%);
-  --ring: oklch(0.32 0.08 260);
+  --border: oklch(0.30 0.03 45 / 15%);
+  --input: oklch(0.30 0.03 45 / 18%);
+  --ring: oklch(0.60 0.16 40);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.17 0.005 90);
-  --sidebar-foreground: oklch(0.96 0.01 90);
-  --sidebar-primary: oklch(0.78 0.13 85);
-  --sidebar-primary-foreground: oklch(0.13 0 0);
-  --sidebar-accent: oklch(0.22 0.005 90);
-  --sidebar-accent-foreground: oklch(0.96 0.01 90);
-  --sidebar-border: oklch(0.28 0.01 90 / 60%);
-  --sidebar-ring: oklch(0.78 0.13 85);
+  --sidebar: oklch(0.93 0.02 80);
+  --sidebar-foreground: oklch(0.30 0.03 45);
+  --sidebar-primary: oklch(0.60 0.16 40);
+  --sidebar-primary-foreground: oklch(0.98 0.01 85);
+  --sidebar-accent: oklch(0.88 0.03 80);
+  --sidebar-accent-foreground: oklch(0.30 0.03 45);
+  --sidebar-border: oklch(0.30 0.03 45 / 15%);
+  --sidebar-ring: oklch(0.60 0.16 40);
   --font-display: 'Playfair Display', 'Cormorant Garamond', ui-serif, Georgia, serif;
   --font-sans: 'Karla', ui-sans-serif, system-ui, sans-serif;
-  --gradient-gold: linear-gradient(135deg, oklch(0.72 0.12 80), oklch(0.55 0.15 50));
-  --indigo-ink: oklch(0.32 0.08 260 / 0.1);
-  --gold-ink: oklch(0.72 0.12 80 / 0.18);
+  --gradient-gold: linear-gradient(135deg, oklch(0.75 0.14 80), oklch(0.60 0.16 40));
+  --indigo-ink: oklch(0.30 0.03 45 / 0.1);
+  --gold-ink: oklch(0.75 0.14 80 / 0.18);
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
+  --background: oklch(0.20 0.02 45);
+  --foreground: oklch(0.96 0.015 80);
+  --card: oklch(0.25 0.02 45);
+  --card-foreground: oklch(0.96 0.015 80);
+  --popover: oklch(0.25 0.02 45);
+  --popover-foreground: oklch(0.96 0.015 80);
+  --primary: oklch(0.96 0.015 80);
+  --primary-foreground: oklch(0.20 0.02 45);
+  --secondary: oklch(0.30 0.03 45);
+  --secondary-foreground: oklch(0.96 0.015 80);
+  --muted: oklch(0.30 0.03 45);
+  --muted-foreground: oklch(0.70 0.02 45);
+  --accent: oklch(0.65 0.15 40);
+  --accent-foreground: oklch(0.98 0.01 85);
   --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.96 0.015 80 / 15%);
+  --input: oklch(0.96 0.015 80 / 18%);
+  --ring: oklch(0.65 0.15 40);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --sidebar: oklch(0.25 0.02 45);
+  --sidebar-foreground: oklch(0.96 0.015 80);
+  --sidebar-primary: oklch(0.65 0.15 40);
+  --sidebar-primary-foreground: oklch(0.98 0.01 85);
+  --sidebar-accent: oklch(0.30 0.03 45);
+  --sidebar-accent-foreground: oklch(0.96 0.015 80);
+  --sidebar-border: oklch(0.96 0.015 80 / 15%);
+  --sidebar-ring: oklch(0.65 0.15 40);
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   * {
     border-color: var(--color-border);
   }
@@ -160,6 +164,85 @@
   ::selection {
     background: oklch(0.72 0.12 80 / 35%);
     color: oklch(0.22 0.04 260);
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes wave {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(0%); }
+  100% { transform: translateX(100%); }
+}
+
+@utility animate-wave {
+  animation: wave 3s infinite linear;
+}
+
+/* Custom Glow Border Animation for Download CV */
+.btn-glow-container {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5px;
+  background-color: oklch(0.60 0.16 40 / 30%); /* Subtle accent border background */
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem; /* rounded-xl */
+  transition: all 0.3s ease;
+}
+
+.btn-glow-sweep {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 2.5rem;
+  background-color: white;
+  transform-origin: left center;
+  transform: translate(-50%, -50%) rotate(0deg);
+  mask-image: linear-gradient(transparent 0%, white 120%);
+  -webkit-mask-image: linear-gradient(transparent 0%, white 120%);
+  animation: rotate-sweep 2.5s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.btn-glow-inner {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+  border-radius: calc(0.75rem - 1.5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-glow-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -10px oklch(0.60 0.16 40 / 50%);
+}
+
+.btn-glow-container:hover .btn-glow-inner {
+  background-color: oklch(0.55 0.15 40); /* Slightly richer/darker accent on hover */
+}
+
+@keyframes rotate-sweep {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 

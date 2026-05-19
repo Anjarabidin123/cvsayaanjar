@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Plus, Trash2, Save } from "lucide-react";
+import { ImageUpload } from "@/components/ImageUpload";
 
 export const Route = createFileRoute("/admin/certificates")({
   component: CertificatesAdmin,
@@ -103,7 +104,10 @@ function CertForm({ value, onChange }: { value: Cert; onChange: (v: Cert) => voi
       <div><Label>Tanggal Terbit</Label><Input type="date" value={value.issue_date ?? ""} onChange={(e) => onChange({ ...value, issue_date: e.target.value || null })} /></div>
       <div><Label>Urutan</Label><Input type="number" value={value.display_order} onChange={(e) => onChange({ ...value, display_order: Number(e.target.value) })} /></div>
       <div><Label>URL Kredensial</Label><Input value={value.credential_url ?? ""} onChange={(e) => onChange({ ...value, credential_url: e.target.value })} placeholder="https://..." /></div>
-      <div><Label>URL Gambar</Label><Input value={value.image_url ?? ""} onChange={(e) => onChange({ ...value, image_url: e.target.value })} placeholder="https://..." /></div>
+      <div>
+        <Label className="mb-2 block">Gambar Sertifikat</Label>
+        <ImageUpload value={value.image_url} onChange={(url) => onChange({ ...value, image_url: url })} label="Unggah Sertifikat" />
+      </div>
       <div className="sm:col-span-2"><Label>Deskripsi</Label><Textarea rows={2} value={value.description} onChange={(e) => onChange({ ...value, description: e.target.value })} /></div>
     </div>
   );

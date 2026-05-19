@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Plus, Trash2, Save } from "lucide-react";
+import { ImageUpload } from "@/components/ImageUpload";
 
 export const Route = createFileRoute("/admin/projects")({
   component: ProjectsAdmin,
@@ -100,17 +101,38 @@ function ProjectsAdmin() {
 }
 
 function ProjForm({ value, onChange }: { value: Proj; onChange: (v: Proj) => void }) {
+  const [techText, setTechText] = useState(() => value.technologies.join(", "));
+
+  // Keep local text in sync when value.technologies changes from outside (e.g. on reset or draft selection)
+  useEffect(() => {
+    const currentParsed = techText.split(",").map((s) => s.trim()).filter(Boolean);
+    const match = currentParsed.length === value.technologies.length && 
+                  currentParsed.every((val, index) => val === value.technologies[index]);
+    if (!match) {
+      setTechText(value.technologies.join(", "));
+    }
+  }, [value.technologies]);
+
+  const handleTechChange = (val: string) => {
+    setTechText(val);
+    const parsed = val.split(",").map((s) => s.trim()).filter(Boolean);
+    onChange({ ...value, technologies: parsed });
+  };
+
   return (
     <div className="grid sm:grid-cols-2 gap-4">
       <div className="sm:col-span-2"><Label>Judul</Label><Input value={value.title} onChange={(e) => onChange({ ...value, title: e.target.value })} /></div>
       <div className="sm:col-span-2"><Label>Deskripsi</Label><Textarea rows={3} value={value.description} onChange={(e) => onChange({ ...value, description: e.target.value })} /></div>
       <div className="sm:col-span-2">
         <Label>Teknologi (pisahkan koma)</Label>
-        <Input value={value.technologies.join(", ")} onChange={(e) => onChange({ ...value, technologies: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })} />
+        <Input value={techText} onChange={(e) => handleTechChange(e.target.value)} />
       </div>
       <div><Label>Link Demo</Label><Input value={value.live_url ?? ""} onChange={(e) => onChange({ ...value, live_url: e.target.value })} placeholder="https://..." /></div>
       <div><Label>Link Repo</Label><Input value={value.repo_url ?? ""} onChange={(e) => onChange({ ...value, repo_url: e.target.value })} placeholder="https://..." /></div>
-      <div className="sm:col-span-2"><Label>URL Gambar</Label><Input value={value.image_url ?? ""} onChange={(e) => onChange({ ...value, image_url: e.target.value })} placeholder="https://..." /></div>
+      <div className="sm:col-span-2">
+        <Label className="mb-2 block">Gambar Proyek</Label>
+        <ImageUpload value={value.image_url} onChange={(url) => onChange({ ...value, image_url: url })} label="Unggah Gambar Proyek" />
+      </div>
       <div><Label>Urutan</Label><Input type="number" value={value.display_order} onChange={(e) => onChange({ ...value, display_order: Number(e.target.value) })} /></div>
     </div>
   );

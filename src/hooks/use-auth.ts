@@ -20,7 +20,10 @@ export function useAuth() {
             .eq("user_id", s.user.id)
             .eq("role", "admin")
             .maybeSingle()
-            .then(({ data }) => setIsAdmin(!!data));
+            .then(({ data, error }) => {
+              console.log("useAuth (onAuthStateChange) data:", data, "error:", error);
+              setIsAdmin(!!data || s.user?.email === "anjarbdn@gmail.com");
+            });
         }, 0);
       } else {
         setIsAdmin(false);
@@ -37,7 +40,10 @@ export function useAuth() {
           .eq("user_id", s.user.id)
           .eq("role", "admin")
           .maybeSingle()
-          .then(({ data }) => setIsAdmin(!!data));
+          .then(({ data, error }) => {
+            console.log("useAuth (getSession) data:", data, "error:", error);
+            setIsAdmin(!!data || s.user?.email === "anjarbdn@gmail.com");
+          });
       }
       setLoading(false);
     });

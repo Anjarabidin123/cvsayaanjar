@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Plus, Trash2, Save } from "lucide-react";
+import { ImageUpload } from "@/components/ImageUpload";
 
 export const Route = createFileRoute("/admin/education")({ component: EducationAdmin });
 
@@ -83,6 +84,29 @@ function EducationAdmin() {
 }
 
 function EduForm({ value, onChange }: { value: Edu; onChange: (v: Edu) => void }) {
+  // Parse description
+  const parseDesc = (desc: string) => {
+    if (!desc) return { text: "", logo: "" };
+    const parts = desc.split("||logo:");
+    return { text: parts[0] || "", logo: parts[1] || "" };
+  };
+
+  const { text, logo } = parseDesc(value.description);
+
+  const handleTextChange = (newText: string) => {
+    onChange({
+      ...value,
+      description: newText + (logo ? `||logo:${logo}` : ""),
+    });
+  };
+
+  const handleLogoChange = (newLogo: string | null) => {
+    onChange({
+      ...value,
+      description: text + (newLogo ? `||logo:${newLogo}` : ""),
+    });
+  };
+
   return (
     <div className="grid sm:grid-cols-2 gap-4">
       <div><Label>Institusi</Label><Input value={value.institution} onChange={(e) => onChange({ ...value, institution: e.target.value })} /></div>
@@ -91,7 +115,14 @@ function EduForm({ value, onChange }: { value: Edu; onChange: (v: Edu) => void }
       <div><Label>Urutan</Label><Input type="number" value={value.display_order} onChange={(e) => onChange({ ...value, display_order: Number(e.target.value) })} /></div>
       <div><Label>Tahun Mulai</Label><Input type="number" value={value.start_year ?? ""} onChange={(e) => onChange({ ...value, start_year: e.target.value ? Number(e.target.value) : null })} /></div>
       <div><Label>Tahun Selesai</Label><Input type="number" value={value.end_year ?? ""} onChange={(e) => onChange({ ...value, end_year: e.target.value ? Number(e.target.value) : null })} placeholder="Kosongkan jika masih" /></div>
-      <div className="sm:col-span-2"><Label>Deskripsi</Label><Textarea rows={2} value={value.description} onChange={(e) => onChange({ ...value, description: e.target.value })} /></div>
+      <div className="sm:col-span-2">
+        <Label className="mb-2 block">Logo Institusi / Sekolah</Label>
+        <ImageUpload value={logo || null} onChange={handleLogoChange} label="Unggah Logo Institusi" />
+      </div>
+      <div className="sm:col-span-2">
+        <Label>Deskripsi</Label>
+        <Textarea rows={2} value={text} onChange={(e) => handleTextChange(e.target.value)} />
+      </div>
     </div>
   );
 }
