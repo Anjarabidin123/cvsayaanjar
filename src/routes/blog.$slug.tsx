@@ -101,7 +101,7 @@ function BlogPost() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           {post.tags && post.tags.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mb-4">
-              {post.tags.map((t) => (
+              {post.tags.map((t: string) => (
                 <span key={t} className="text-[10px] uppercase tracking-wider px-2 py-0.5 bg-primary/10 text-primary border border-primary/20">{t}</span>
               ))}
             </div>
