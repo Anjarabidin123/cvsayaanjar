@@ -43,6 +43,7 @@ function AdminLayout() {
     { to: "/admin/skills", label: "Skill" },
     { to: "/admin/certificates", label: "Sertifikat" },
     { to: "/admin/testimonials", label: "Testimoni" },
+    { to: "/admin/posts", label: "Blog" },
   ];
 
   return (

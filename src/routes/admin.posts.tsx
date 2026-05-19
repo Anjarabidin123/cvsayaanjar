@@ -123,7 +123,7 @@ function PostForm({ value, onChange }: { value: Post; onChange: (v: Post) => voi
       </div>
       <div>
         <Label>Gambar Cover</Label>
-        <ImageUpload value={value.cover_url ?? ""} onChange={(url) => onChange({ ...value, cover_url: url || null })} bucket="portfolio" folder="blog" />
+        <ImageUpload value={value.cover_url} onChange={(url) => onChange({ ...value, cover_url: url })} label="Pilih Cover" />
       </div>
       <div>
         <Label>Isi (Markdown)</Label>
