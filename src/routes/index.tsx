@@ -222,7 +222,22 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Portfolio — Curriculum Vitae Nusantara" },
       { name: "description", content: "Portfolio profesional bercitarasa Indonesia — pengalaman, pendidikan, proyek, sertifikat, dan testimoni." },
+      { property: "og:title", content: "Portfolio — Curriculum Vitae Nusantara" },
+      { property: "og:description", content: "Portfolio profesional bercitarasa Indonesia — pengalaman, pendidikan, proyek, sertifikat, dan testimoni." },
+      { property: "og:url", content: "https://cvsayaanjar.lovable.app/" },
+      { property: "og:type", content: "website" },
     ],
+    links: [{ rel: "canonical", href: "https://cvsayaanjar.lovable.app/" }],
+    scripts: [{
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: "CV Nusantara",
+        url: "https://cvsayaanjar.lovable.app/",
+        jobTitle: "Developer",
+      }),
+    }],
   }),
   component: HomePage,
 });
@@ -1175,6 +1190,7 @@ function NavBar({ profile, lang, setLang, t }: { profile: any; lang: "id" | "en"
           {navLinks.map(l => (
             <a key={l.href} href={l.href} className="hover:text-primary transition-colors">{l.label}</a>
           ))}
+          <Link to="/blog" className="hover:text-primary transition-colors">{t("nav_blog")}</Link>
         </nav>
         <div className="flex items-center gap-2">
           <button
@@ -1228,6 +1244,13 @@ function NavBar({ profile, lang, setLang, t }: { profile: any; lang: "id" | "en"
               {l.label}
             </a>
           ))}
+          <Link
+            to="/blog"
+            onClick={() => setMobileOpen(false)}
+            className="block text-sm text-muted-foreground hover:text-primary transition-colors py-2 border-b border-border/50"
+          >
+            {t("nav_blog")}
+          </Link>
           {/* Mobile CTAs */}
           <div className="pt-2 flex flex-col gap-2">
             <button

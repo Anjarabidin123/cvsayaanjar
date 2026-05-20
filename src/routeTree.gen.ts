@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AbidloginRouteImport } from './routes/abidlogin'
@@ -24,6 +25,11 @@ import { Route as AdminExperiencesRouteImport } from './routes/admin.experiences
 import { Route as AdminEducationRouteImport } from './routes/admin.education'
 import { Route as AdminCertificatesRouteImport } from './routes/admin.certificates'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/abidlogin': typeof AbidloginRoute
   '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/certificates': typeof AdminCertificatesRoute
   '/admin/education': typeof AdminEducationRoute
   '/admin/experiences': typeof AdminExperiencesRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/abidlogin': typeof AbidloginRoute
   '/blog': typeof BlogRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/certificates': typeof AdminCertificatesRoute
   '/admin/education': typeof AdminEducationRoute
   '/admin/experiences': typeof AdminExperiencesRoute
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/abidlogin': typeof AbidloginRoute
   '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/certificates': typeof AdminCertificatesRoute
   '/admin/education': typeof AdminEducationRoute
   '/admin/experiences': typeof AdminExperiencesRoute
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/abidlogin'
     | '/admin'
     | '/blog'
+    | '/sitemap.xml'
     | '/admin/certificates'
     | '/admin/education'
     | '/admin/experiences'
@@ -165,6 +175,7 @@ export interface FileRouteTypes {
     | '/'
     | '/abidlogin'
     | '/blog'
+    | '/sitemap.xml'
     | '/admin/certificates'
     | '/admin/education'
     | '/admin/experiences'
@@ -181,6 +192,7 @@ export interface FileRouteTypes {
     | '/abidlogin'
     | '/admin'
     | '/blog'
+    | '/sitemap.xml'
     | '/admin/certificates'
     | '/admin/education'
     | '/admin/experiences'
@@ -198,10 +210,18 @@ export interface RootRouteChildren {
   AbidloginRoute: typeof AbidloginRoute
   AdminRoute: typeof AdminRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog': {
       id: '/blog'
       path: '/blog'
@@ -344,6 +364,7 @@ const rootRouteChildren: RootRouteChildren = {
   AbidloginRoute: AbidloginRoute,
   AdminRoute: AdminRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
