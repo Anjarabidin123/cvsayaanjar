@@ -27,16 +27,9 @@ import { CertificateExplorer } from "@/components/CertificateExplorer";
 // Multi‑screenshot 3D Stack/Deck image slider for featured projects
 function ProjectImageSlider({ images, title }: { images: string[]; title: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
   const total = images.length;
 
-  useEffect(() => {
-    if (total <= 1 || isHovered) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % total);
-    }, 3000); // Scroll automatically every 3 seconds
-    return () => clearInterval(interval);
-  }, [total, isHovered]);
+  // Auto-slide removed for better performance — user navigates manually
 
   if (total === 1) {
     return (
@@ -110,10 +103,8 @@ function ProjectImageSlider({ images, title }: { images: string[]; title: string
   };
 
   return (
-    <div 
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="relative w-full h-full flex items-center justify-center overflow-hidden py-5" 
+    <div
+      className="relative w-full h-full flex items-center justify-center overflow-hidden py-5"
       style={{ perspective: "1000px" }}
     >
       {/* Sleek Floating Navigation Arrows */}
