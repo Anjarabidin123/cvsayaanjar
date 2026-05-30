@@ -30,13 +30,7 @@ function ProjectImageSlider({ images, title }: { images: string[]; title: string
   const [isHovered, setIsHovered] = useState(false);
   const total = images.length;
 
-  useEffect(() => {
-    if (total <= 1 || isHovered) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % total);
-    }, 3000); // Scroll automatically every 3 seconds
-    return () => clearInterval(interval);
-  }, [total, isHovered]);
+  // Auto-slide removed for better performance — user navigates manually
 
   if (total === 1) {
     return (
