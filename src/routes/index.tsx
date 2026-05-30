@@ -27,7 +27,6 @@ import { CertificateExplorer } from "@/components/CertificateExplorer";
 // Multi‑screenshot 3D Stack/Deck image slider for featured projects
 function ProjectImageSlider({ images, title }: { images: string[]; title: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
   const total = images.length;
 
   // Auto-slide removed for better performance — user navigates manually
