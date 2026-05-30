@@ -103,10 +103,8 @@ function ProjectImageSlider({ images, title }: { images: string[]; title: string
   };
 
   return (
-    <div 
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="relative w-full h-full flex items-center justify-center overflow-hidden py-5" 
+    <div
+      className="relative w-full h-full flex items-center justify-center overflow-hidden py-5"
       style={{ perspective: "1000px" }}
     >
       {/* Sleek Floating Navigation Arrows */}
