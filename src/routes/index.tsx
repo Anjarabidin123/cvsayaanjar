@@ -271,7 +271,7 @@ function HomePage() {
     if (cvUrl) {
       window.open(cvUrl, "_blank");
     } else {
-      window.print();
+      toast.error(lang === "id" ? "Dokumen CV belum diunggah." : "CV document has not been uploaded yet.");
     }
   };
 
