@@ -4,8 +4,6 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
-  HeadContent,
-  Scripts,
 } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { NusantaraPreloader } from "@/components/NusantaraPreloader";
@@ -14,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "@/components/ui/sonner";
 import { LanguageProvider } from "@/lib/i18n";
 
-import appCss from "../styles.css?url";
+
 
 function NotFoundComponent() {
   return (
@@ -122,49 +120,12 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Pro CV Creator generates professional, elegant CVs with project showcases and admin control." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Pro CV Creator generates professional, elegant CVs with project showcases and admin control." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "Pro CV Creator generates professional, elegant CVs with project showcases and admin control." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/22b68767-1084-47eb-aa86-c4781ff92df2/id-preview-0b105e21--0f875a2d-5836-48b1-a50f-e1adb50c2b21.lovable.app-1778920174563.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/22b68767-1084-47eb-aa86-c4781ff92df2/id-preview-0b105e21--0f875a2d-5836-48b1-a50f-e1adb50c2b21.lovable.app-1778920174563.png" },
-    ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
-  }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
 
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
+
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
