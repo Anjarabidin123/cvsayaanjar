@@ -235,6 +235,26 @@ export const Route = createFileRoute("/")({
 
 type SocialLinks = { linkedin?: string; github?: string; twitter?: string; instagram?: string; whatsapp?: string };
 
+function downloadCV(profile: { full_name?: string | null; social_links?: unknown } | null | undefined, lang: "id" | "en") {
+  const links = (profile?.social_links ?? {}) as { cv_url_id?: string; cv_url_en?: string };
+  const cvUrl = lang === "id" ? links.cv_url_id : links.cv_url_en;
+  if (!cvUrl) {
+    toast.error(lang === "id" ? "Dokumen CV belum diunggah." : "CV document has not been uploaded yet.");
+    return;
+  }
+
+  try {
+    const url = new URL(cvUrl);
+    if (url.protocol !== "https:" && url.protocol !== "http:") throw new Error("Invalid CV URL");
+    const name = (profile?.full_name ?? "CV").trim().replace(/[^a-zA-Z0-9 -]/g, "").replace(/\s+/g, "-");
+    url.searchParams.set("download", `CV-${name || "Portfolio"}-${lang.toUpperCase()}.pdf`);
+    // Storage serves ?download with Content-Disposition: attachment, so this saves the PDF instead of opening a blocked popup.
+    window.location.assign(url.toString());
+  } catch {
+    toast.error(lang === "id" ? "Tautan CV tidak valid." : "The CV link is invalid.");
+  }
+}
+
 async function fetchPortfolio() {
   const [profile, experiences, education, projects, skills, certificates, testimonials] = await Promise.all([
     supabase.from("profiles").select("*").limit(1).maybeSingle(),
@@ -265,15 +285,7 @@ function HomePage() {
   const profile = data?.profile;
   const socialLinks = (profile?.social_links ?? {}) as any;
 
-  const handleDownloadCV = () => {
-    const sl = (profile?.social_links || {}) as any;
-    const cvUrl = lang === "id" ? sl.cv_url_id : sl.cv_url_en;
-    if (cvUrl) {
-      window.open(cvUrl, "_blank");
-    } else {
-      toast.error(lang === "id" ? "Dokumen CV belum diunggah." : "CV document has not been uploaded yet.");
-    }
-  };
+  const handleDownloadCV = () => downloadCV(profile, lang);
 
   const yearsExp = useMemo(() => {
     if (socialLinks.experience_years) {
@@ -1144,15 +1156,7 @@ function formatMonthYear(d: string, lang: "id" | "en") {
 function NavBar({ profile, lang, setLang, t }: { profile: any; lang: "id" | "en"; setLang: (l: "id" | "en") => void; t: (k: DictKey) => string }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleDownloadCV = () => {
-    const sl = profile?.social_links || {};
-    const cvUrl = lang === "id" ? sl.cv_url_id : sl.cv_url_en;
-    if (cvUrl) {
-      window.open(cvUrl, "_blank");
-    } else {
-      window.print();
-    }
-  };
+  const handleDownloadCV = () => downloadCV(profile, lang);
 
   const navLinks = [
     { href: "#about", label: t("nav_about") },
