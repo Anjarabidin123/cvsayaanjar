@@ -12,7 +12,7 @@ import { z } from "zod";
 import {
   ArrowUpRight, Github, Linkedin, Mail, MapPin, ExternalLink, Twitter, Instagram,
   Award, GraduationCap, Quote, Star, Download, Globe, Send, MessageCircle,
-  Moon, Sun, Menu, X, ChevronUp, ChevronLeft, ChevronRight,
+  Menu, X, ChevronUp, ChevronLeft, ChevronRight,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { NusantaraPattern, NusantaraGlyph, GununganOrnament, SulurDivider } from "@/components/NusantaraOrnament";
@@ -376,12 +376,12 @@ function HomePage() {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="mt-4 md:mt-8 max-w-lg overflow-x-auto"
             >
-              <div className="bg-[#1e1e2e] rounded-xl overflow-hidden border border-white/10 shadow-2xl">
-                <div className="flex items-center gap-2 px-4 py-2.5 bg-black/30">
-                  <div className="w-3 h-3 rounded-full bg-red-400/80" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-400/80" />
-                  <div className="w-3 h-3 rounded-full bg-green-400/80" />
-                  <span className="ml-3 text-[10px] text-white/30 font-mono">portfolio.tsx</span>
+              <div className="bg-card rounded-xl overflow-hidden border border-border shadow-sm">
+                <div className="flex items-center gap-2 px-4 py-2.5 bg-secondary border-b border-border">
+                  <div className="w-3 h-3 rounded-full bg-accent/70" />
+                  <div className="w-3 h-3 rounded-full bg-primary/40" />
+                  <div className="w-3 h-3 rounded-full bg-muted-foreground/40" />
+                  <span className="ml-3 text-[10px] text-muted-foreground font-mono">portfolio.tsx</span>
                 </div>
                 <div className="p-4 font-mono text-xs leading-relaxed">
                   <TypingCode name={profile?.full_name ?? "Anjar Abidin"} skills={skills.map(s => s.name)} />
@@ -957,21 +957,21 @@ function TypingCode({ name, skills }: { name: string; skills: string[] }) {
   const topSkills = skills.length > 0 ? skills.slice(0, 3) : ["React", "TypeScript", "Node.js"];
 
   const lines = [
-    { indent: 0, parts: [{ text: "const ", color: "#c792ea" }, { text: "developer", color: "#82aaff" }, { text: " = {", color: "#89ddff" }] },
-    { indent: 1, parts: [{ text: "name", color: "#f78c6c" }, { text: ": ", color: "#89ddff" }, { text: `"${name}"`, color: "#c3e88d" }, { text: ",", color: "#89ddff" }] },
+    { indent: 0, parts: [{ text: "const ", color: "var(--accent)" }, { text: "developer", color: "var(--primary)" }, { text: " = {", color: "var(--foreground)" }] },
+    { indent: 1, parts: [{ text: "name", color: "var(--accent)" }, { text: ": ", color: "var(--foreground)" }, { text: `"${name}"`, color: "var(--primary)" }, { text: ",", color: "var(--foreground)" }] },
     { indent: 1, parts: [
-      { text: "skills", color: "#f78c6c" }, 
-      { text: ": [", color: "#89ddff" },
+      { text: "skills", color: "var(--accent)" }, 
+      { text: ": [", color: "var(--foreground)" },
       ...topSkills.map((s, idx) => [
-        { text: `"${s}"`, color: "#c3e88d" },
-        ...(idx < topSkills.length - 1 ? [{ text: ", ", color: "#89ddff" }] : [])
+        { text: `"${s}"`, color: "var(--primary)" },
+        ...(idx < topSkills.length - 1 ? [{ text: ", ", color: "var(--foreground)" }] : [])
       ]).flat(),
-      { text: "]", color: "#89ddff" },
-      { text: ",", color: "#89ddff" }
+      { text: "]", color: "var(--foreground)" },
+      { text: ",", color: "var(--foreground)" }
     ] },
-    { indent: 1, parts: [{ text: "passion", color: "#f78c6c" }, { text: ": ", color: "#89ddff" }, { text: "\"Building beautiful things\"", color: "#c3e88d" }, { text: ",", color: "#89ddff" }] },
-    { indent: 1, parts: [{ text: "available", color: "#f78c6c" }, { text: ": ", color: "#89ddff" }, { text: "true", color: "#ff5370" }] },
-    { indent: 0, parts: [{ text: "};", color: "#89ddff" }] },
+    { indent: 1, parts: [{ text: "passion", color: "var(--accent)" }, { text: ": ", color: "var(--foreground)" }, { text: "\"Building beautiful things\"", color: "var(--primary)" }, { text: ",", color: "var(--foreground)" }] },
+    { indent: 1, parts: [{ text: "available", color: "var(--accent)" }, { text: ": ", color: "var(--foreground)" }, { text: "true", color: "var(--primary)" }] },
+    { indent: 0, parts: [{ text: "};", color: "var(--foreground)" }] },
   ];
 
   const [visibleLines, setVisibleLines] = useState(0);
@@ -995,7 +995,7 @@ function TypingCode({ name, skills }: { name: string; skills: string[] }) {
           transition={{ duration: 0.3 }}
           className="flex items-start"
         >
-          <span className="text-white/20 select-none mr-3 w-4 text-right shrink-0 font-mono">{i + 1}</span>
+          <span className="text-muted-foreground/50 select-none mr-3 w-4 text-right shrink-0 font-mono">{i + 1}</span>
           <div className="flex-1 min-w-0 font-mono" style={{ paddingLeft: `${line.indent * 16}px` }}>
             <div className="break-words whitespace-pre-wrap leading-relaxed">
               {line.parts.map((part, j) => (
@@ -1139,16 +1139,10 @@ function formatMonthYear(d: string, lang: "id" | "en") {
   return new Date(d).toLocaleDateString(lang === "id" ? "id-ID" : "en-US", { month: "short", year: "numeric" });
 }
 
-/* ---------- NavBar with Mobile Menu & Dark Mode ---------- */
+/* ---------- NavBar with Mobile Menu ---------- */
 
 function NavBar({ profile, lang, setLang, t }: { profile: any; lang: "id" | "en"; setLang: (l: "id" | "en") => void; t: (k: DictKey) => string }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
-
-  const toggleDark = () => {
-    document.documentElement.classList.toggle("dark");
-    setDark(!dark);
-  };
 
   const handleDownloadCV = () => {
     const sl = profile?.social_links || {};
@@ -1184,13 +1178,6 @@ function NavBar({ profile, lang, setLang, t }: { profile: any; lang: "id" | "en"
           <Link to="/blog" className="hover:text-primary transition-colors">{t("nav_blog")}</Link>
         </nav>
         <div className="flex items-center gap-2">
-          <button
-            onClick={toggleDark}
-            className="p-2 rounded-full border border-border hover:border-primary text-muted-foreground hover:text-primary transition-colors"
-            aria-label="Toggle dark mode"
-          >
-            {dark ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
-          </button>
           <button
             onClick={() => setLang(lang === "id" ? "en" : "id")}
             className="text-xs px-2 py-1 border border-border hover:border-primary rounded-full inline-flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors"

@@ -5,8 +5,7 @@ import {
   createRootRouteWithContext,
   useRouter,
 } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { NusantaraPreloader } from "@/components/NusantaraPreloader";
+import { useEffect } from "react";
 import { NusantaraPattern, GununganOrnament, NusantaraGlyph, SulurDivider } from "@/components/NusantaraOrnament";
 import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "@/components/ui/sonner";
@@ -129,36 +128,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const [showPreloader, setShowPreloader] = useState(true);
-  const [contentVisible, setContentVisible] = useState(false);
 
   useEffect(() => {
+    document.documentElement.classList.remove("dark");
     const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
       queryClient.invalidateQueries();
     });
     return () => subscription.unsubscribe();
   }, [queryClient]);
 
-  const handlePreloaderFinished = () => {
-    setContentVisible(true);
-    setTimeout(() => setShowPreloader(false), 100);
-  };
-
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        {showPreloader && (
-          <NusantaraPreloader onFinished={handlePreloaderFinished} />
-        )}
-        <div
-          style={{
-            opacity: contentVisible ? 1 : 0,
-            transition: "opacity 0.5s ease 0.1s",
-          }}
-        >
-          <Outlet />
-          <Toaster />
-        </div>
+        <Outlet />
+        <Toaster />
       </LanguageProvider>
     </QueryClientProvider>
   );
