@@ -23,6 +23,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Translate } from "@/components/Translate";
 import { CertificateExplorer } from "@/components/CertificateExplorer";
+import { applyPortfolioUpdates, type PortfolioData } from "@/lib/portfolio-updates";
+import { downloadGeneratedCV } from "@/lib/cv-pdf";
+
+const SHOW_TESTIMONIALS = false;
 
 // Multi‑screenshot 3D Stack/Deck image slider for featured projects
 function ProjectImageSlider({ images, title }: { images: string[]; title: string }) {
@@ -235,24 +239,11 @@ export const Route = createFileRoute("/")({
 
 type SocialLinks = { linkedin?: string; github?: string; twitter?: string; instagram?: string; whatsapp?: string };
 
-function downloadCV(profile: { full_name?: string | null; social_links?: unknown } | null | undefined, lang: "id" | "en") {
-  const links = (profile?.social_links ?? {}) as { cv_url_id?: string; cv_url_en?: string };
-  const cvUrl = lang === "id" ? links.cv_url_id : links.cv_url_en;
-  if (!cvUrl) {
-    toast.error(lang === "id" ? "Dokumen CV belum diunggah." : "CV document has not been uploaded yet.");
-    return;
-  }
-
-  try {
-    const url = new URL(cvUrl);
-    if (url.protocol !== "https:" && url.protocol !== "http:") throw new Error("Invalid CV URL");
-    const name = (profile?.full_name ?? "CV").trim().replace(/[^a-zA-Z0-9 -]/g, "").replace(/\s+/g, "-");
-    url.searchParams.set("download", `CV-${name || "Portfolio"}-${lang.toUpperCase()}.pdf`);
-    // Storage serves ?download with Content-Disposition: attachment, so this saves the PDF instead of opening a blocked popup.
-    window.location.assign(url.toString());
-  } catch {
-    toast.error(lang === "id" ? "Tautan CV tidak valid." : "The CV link is invalid.");
-  }
+function downloadCV(data: PortfolioData | undefined, lang: "id" | "en") {
+  if (!data) return;
+  void downloadGeneratedCV(data, lang).catch(() => {
+    toast.error(lang === "id" ? "Gagal membuat dokumen CV." : "Failed to generate CV document.");
+  });
 }
 
 async function fetchPortfolio() {
@@ -278,14 +269,14 @@ async function fetchPortfolio() {
 
 function HomePage() {
   const { t, lang, setLang } = useI18n();
-  const { data, isLoading } = useQuery({ queryKey: ["portfolio"], queryFn: fetchPortfolio });
+  const { data, isLoading } = useQuery({ queryKey: ["portfolio"], queryFn: async () => applyPortfolioUpdates(await fetchPortfolio()) });
 
   const experiences = data?.experiences ?? [];
   const projects = data?.projects ?? [];
   const profile = data?.profile;
   const socialLinks = (profile?.social_links ?? {}) as any;
 
-  const handleDownloadCV = () => downloadCV(profile, lang);
+  const handleDownloadCV = () => downloadCV(data, lang);
 
   const yearsExp = useMemo(() => {
     if (socialLinks.experience_years) {
@@ -341,7 +332,7 @@ function HomePage() {
       </div>
 
       {/* Nav */}
-      <NavBar profile={profile} lang={lang} setLang={setLang} t={t} />
+      <NavBar data={data} profile={profile} lang={lang} setLang={setLang} t={t} />
 
       {/* Hero */}
       <section id="about" className="relative pt-16 md:pt-32 pb-6 md:pb-20 px-4 md:px-6">
@@ -477,30 +468,30 @@ function HomePage() {
             whileInView={{ height: "100%" }}
             viewport={{ once: true }}
             transition={{ duration: 1.5, ease: "easeOut" }}
-            className="absolute left-0 md:left-[140px] top-0 w-px bg-gradient-to-b from-accent via-accent/50 to-transparent hidden md:block"
+            className="hidden md:block absolute left-[242px] top-3.5 w-px bg-gradient-to-b from-accent via-accent/50 to-transparent"
           />
           <div className="space-y-6 md:space-y-12">
           {experiences.map((exp, i) => (
             <motion.div
               key={exp.id}
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.7, delay: i * 0.15, type: "spring", stiffness: 100 }}
-              className="grid md:grid-cols-12 gap-1.5 md:gap-6 group relative"
+              transition={{ duration: 0.6, delay: i * 0.12, type: "spring", stiffness: 100 }}
+              className="grid md:grid-cols-[214px_1fr] gap-1.5 md:gap-0 group relative items-start"
             >
               {/* Timeline dot */}
               <motion.div 
                 initial={{ scale: 0 }}
                 whileInView={{ scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.15 + 0.3, type: "spring", stiffness: 200 }}
-                className="hidden md:block absolute left-[136px] top-2 w-3 h-3 rounded-full bg-accent shadow-[0_0_12px_rgba(180,90,50,0.6)] z-10"
+                transition={{ delay: i * 0.12 + 0.25, type: "spring", stiffness: 200 }}
+                className="hidden md:block absolute left-[236.5px] top-2.5 w-3 h-3 rounded-full bg-accent shadow-[0_0_12px_rgba(180,90,50,0.6)] ring-4 ring-background z-10"
               />
-              <div className="md:col-span-3 text-[10px] md:text-sm text-muted-foreground tracking-wider font-mono pt-1">
+              <div className="text-[10px] md:text-sm text-muted-foreground tracking-wider font-mono pt-1 md:pt-2 md:text-right md:whitespace-nowrap">
                 {formatMonthYear(exp.start_date, lang)} — {exp.end_date ? formatMonthYear(exp.end_date, lang) : t("present")}
               </div>
-              <div className="md:col-span-9 bg-card/40 backdrop-blur-sm border border-white/20 rounded-xl p-4 md:p-6 group-hover:border-accent/50 group-hover:shadow-lg group-hover:shadow-accent/5 transition-all duration-500">
+              <div className="md:ml-14 bg-card/40 backdrop-blur-sm border border-white/20 rounded-xl p-4 md:p-6 group-hover:border-accent/50 group-hover:shadow-lg group-hover:shadow-accent/5 transition-all duration-500">
                 <h3 className="font-display text-lg md:text-3xl mb-0.5 text-primary group-hover:text-accent transition-colors duration-300"><Translate text={exp.role} /></h3>
                 <p className="text-accent mb-2 text-xs md:text-sm italic">{exp.company}</p>
                 <p className="text-muted-foreground text-xs md:text-sm leading-relaxed"><Translate text={exp.description} maxChars={130} /></p>
@@ -757,6 +748,8 @@ function HomePage() {
         </div>
       </section>
 
+      {SHOW_TESTIMONIALS && (
+      <>
       <Divider label={t("section_testimonials")} />
 
       {/* Testimonials */}
@@ -807,6 +800,9 @@ function HomePage() {
           )}
         </div>
       </section>
+
+      </>
+      )}
 
       <Divider label={t("section_contact")} />
 
@@ -1153,10 +1149,10 @@ function formatMonthYear(d: string, lang: "id" | "en") {
 
 /* ---------- NavBar with Mobile Menu ---------- */
 
-function NavBar({ profile, lang, setLang, t }: { profile: any; lang: "id" | "en"; setLang: (l: "id" | "en") => void; t: (k: DictKey) => string }) {
+function NavBar({ data, profile, lang, setLang, t }: { data: PortfolioData; profile: any; lang: "id" | "en"; setLang: (l: "id" | "en") => void; t: (k: DictKey) => string }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleDownloadCV = () => downloadCV(profile, lang);
+  const handleDownloadCV = () => downloadCV(data, lang);
 
   const navLinks = [
     { href: "#about", label: t("nav_about") },
@@ -1164,7 +1160,7 @@ function NavBar({ profile, lang, setLang, t }: { profile: any; lang: "id" | "en"
     { href: "#education", label: t("nav_education") },
     { href: "#projects", label: t("nav_projects") },
     { href: "#skills", label: t("nav_skills") },
-    { href: "#testimonials", label: t("nav_testimonials") },
+    ...(SHOW_TESTIMONIALS ? [{ href: "#testimonials", label: t("nav_testimonials") }] : []),
     { href: "#contact", label: t("nav_contact") },
   ];
 
