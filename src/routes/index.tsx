@@ -215,10 +215,10 @@ function ProjectImageSlider({ images, title }: { images: string[]; title: string
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Nugroho Anjar Abidin — Portfolio & Curriculum Vitae" },
-      { name: "description", content: "Portfolio profesional bercitarasa Indonesia — pengalaman, pendidikan, proyek, sertifikat, dan testimoni." },
-      { property: "og:title", content: "Nugroho Anjar Abidin — Portfolio & Curriculum Vitae" },
-      { property: "og:description", content: "Portfolio profesional bercitarasa Indonesia — pengalaman, pendidikan, proyek, sertifikat, dan testimoni." },
+      { title: "Nugroho Anjar Abidin (anjarabidin / anjarbdn) — Full Stack Developer Portfolio" },
+      { name: "description", content: "Portfolio resmi Nugroho Anjar Abidin (Anjar Abidin / Nugroho Anjar / anjarabidin / anjarbdn) — Full Stack Developer dari Semarang, Indonesia." },
+      { property: "og:title", content: "Nugroho Anjar Abidin (anjarabidin) — Full Stack Developer Portfolio" },
+      { property: "og:description", content: "Portfolio dan CV resmi Nugroho Anjar Abidin (Anjar Abidin / anjarbdn) — Full Stack Developer." },
       { property: "og:url", content: "https://anjarabidin.my.id/" },
       { property: "og:type", content: "website" },
     ],
@@ -229,7 +229,16 @@ export const Route = createFileRoute("/")({
         "@context": "https://schema.org",
         "@type": "Person",
         name: "Nugroho Anjar Abidin",
+        alternateName: ["Anjar Abidin", "Nugroho Anjar", "anjarabidin", "anjarbdn"],
         url: "https://anjarabidin.my.id/",
+        image: "https://anjarabidin.my.id/avatar-anjar.jpg",
+        email: "mailto:anjarbdn@gmail.com",
+        sameAs: [
+          "https://github.com/Anjarabidin27",
+          "https://github.com/Anjarabidin123",
+          "https://www.instagram.com/anjarbdn",
+          "https://www.linkedin.com/in/nugroho-anjar-abidin-a140682847/",
+        ],
         jobTitle: "Full Stack Developer",
       }),
     }],
