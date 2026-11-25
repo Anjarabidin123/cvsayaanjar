@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /abidlogin
 
-Sitemap: https://cvsayaanjar.lovable.app/sitemap.xml
+Sitemap: https://anjarabidin.my.id/sitemap.xml

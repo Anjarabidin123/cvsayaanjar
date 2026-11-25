@@ -215,22 +215,22 @@ function ProjectImageSlider({ images, title }: { images: string[]; title: string
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Portfolio — Curriculum Vitae Nusantara" },
+      { title: "Nugroho Anjar Abidin — Portfolio & Curriculum Vitae" },
       { name: "description", content: "Portfolio profesional bercitarasa Indonesia — pengalaman, pendidikan, proyek, sertifikat, dan testimoni." },
-      { property: "og:title", content: "Portfolio — Curriculum Vitae Nusantara" },
+      { property: "og:title", content: "Nugroho Anjar Abidin — Portfolio & Curriculum Vitae" },
       { property: "og:description", content: "Portfolio profesional bercitarasa Indonesia — pengalaman, pendidikan, proyek, sertifikat, dan testimoni." },
-      { property: "og:url", content: "https://cvsayaanjar.lovable.app/" },
+      { property: "og:url", content: "https://anjarabidin.my.id/" },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "https://cvsayaanjar.lovable.app/" }],
+    links: [{ rel: "canonical", href: "https://anjarabidin.my.id/" }],
     scripts: [{
       type: "application/ld+json",
       children: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Person",
-        name: "CV Nusantara",
-        url: "https://cvsayaanjar.lovable.app/",
-        jobTitle: "Developer",
+        name: "Nugroho Anjar Abidin",
+        url: "https://anjarabidin.my.id/",
+        jobTitle: "Full Stack Developer",
       }),
     }],
   }),

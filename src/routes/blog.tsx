@@ -5,7 +5,7 @@ import { Calendar, Clock, ArrowRight, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 
-const SITE = "https://cvsayaanjar.lovable.app";
+const SITE = "https://anjarabidin.my.id";
 
 export const Route = createFileRoute("/blog")({
   component: BlogIndex,
