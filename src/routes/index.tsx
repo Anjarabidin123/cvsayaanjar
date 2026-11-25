@@ -237,7 +237,7 @@ export const Route = createFileRoute("/")({
           "https://github.com/Anjarabidin27",
           "https://github.com/Anjarabidin123",
           "https://www.instagram.com/anjarbdn",
-          "https://www.linkedin.com/in/nugroho-anjar-abidin-a140682847/",
+          "https://www.linkedin.com/in/nugrohoanjarabidin/",
         ],
         jobTitle: "Full Stack Developer",
       }),

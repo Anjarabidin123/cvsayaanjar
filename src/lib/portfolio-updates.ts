@@ -112,6 +112,16 @@ const PROJECT_POLISH_MAP: Record<string, { title?: string; description?: string 
  * still reflect the previous values, allowing future admin edits to take precedence.
  */
 export function applyPortfolioUpdates(data: PortfolioData): PortfolioData {
+  const existingSocial =
+    data.profile?.social_links && typeof data.profile.social_links === "object" && !Array.isArray(data.profile.social_links)
+      ? (data.profile.social_links as Record<string, unknown>)
+      : {};
+  const linkedinVal = typeof existingSocial.linkedin === "string" ? existingSocial.linkedin : "";
+  const updatedSocial =
+    !linkedinVal || linkedinVal.includes("/username")
+      ? { ...existingSocial, linkedin: "https://www.linkedin.com/in/nugrohoanjarabidin/" }
+      : existingSocial;
+
   const profile = data.profile
     ? {
         ...data.profile,
@@ -119,6 +129,9 @@ export function applyPortfolioUpdates(data: PortfolioData): PortfolioData {
           !data.profile.avatar_url || data.profile.avatar_url.includes(OLD_AVATAR_MARKER)
             ? "/avatar-anjar.jpg"
             : data.profile.avatar_url,
+        social_links: updatedSocial as PortfolioData["profile"] extends null
+          ? never
+          : NonNullable<PortfolioData["profile"]>["social_links"],
       }
     : null;
 
