@@ -67,8 +67,48 @@ const APOTEK_SIMAAF_PROJECT: Tables<"projects"> = {
   created_at: "2026-11-25T00:00:00.000Z",
 };
 
+const EXTRA_TOOL_SKILLS: Tables<"skills">[] = [
+  {
+    id: "skill-tool-vercel",
+    category: "Tools",
+    name: "Vercel / Deployment",
+    proficiency: 85,
+    display_order: 8,
+    created_at: "2026-11-25T00:00:00.000Z",
+  },
+  {
+    id: "skill-tool-figma",
+    category: "Tools",
+    name: "Figma",
+    proficiency: 80,
+    display_order: 9,
+    created_at: "2026-11-25T00:00:00.000Z",
+  },
+];
+
+const ROLE_CASE_MAP: Record<string, string> = {
+  "developer/owner": "Developer / Owner",
+  "junior software developer": "Junior Software Developer",
+  "intern it": "IT Intern",
+  "kontributor proyek": "Kontributor Proyek",
+  "proyek tim pribadi": "Proyek Tim Pribadi",
+};
+
+const PROJECT_POLISH_MAP: Record<string, { title?: string; description?: string }> = {
+  "hris absensi pintar": { title: "HRIS Absensi Pintar" },
+  "kasirq pos": {
+    description:
+      "Platform kasir (POS) modern untuk operasional toko, manajemen produk, dan transaksi cepat.",
+  },
+  "kasirq-cafe/resto": {
+    title: "KasirQ — Cafe / Resto",
+    description:
+      "Pengembangan lanjutan KasirQ yang berfokus pada operasional F&B, manajemen menu, dan laporan penjualan.",
+  },
+};
+
 /**
- * Applies requested portfolio updates when the live Supabase records
+ * Applies requested portfolio updates and polish when the live Supabase records
  * still reflect the previous values, allowing future admin edits to take precedence.
  */
 export function applyPortfolioUpdates(data: PortfolioData): PortfolioData {
@@ -84,19 +124,20 @@ export function applyPortfolioUpdates(data: PortfolioData): PortfolioData {
 
   const experiences = data.experiences.map((exp) => {
     const companyLower = exp.company.toLowerCase();
-    const roleLower = exp.role.toLowerCase();
+    const roleKey = exp.role.trim().toLowerCase();
+    const polishedRole = ROLE_CASE_MAP[roleKey] ?? exp.role.trim();
 
     // KasirQ: 5 bulan (Feb 2025 - Jun 2025)
     if (companyLower.includes("kasirq") && !exp.end_date) {
-      return { ...exp, end_date: "2025-06-01" };
+      return { ...exp, role: polishedRole, end_date: "2025-06-01" };
     }
 
     // Kontributor Proyek PT CMS Duta Solusi: 3 bulan (Apr 2026 - Jun 2026)
-    if (companyLower.includes("cms duta solusi") && roleLower.includes("kontributor") && !exp.end_date) {
-      return { ...exp, end_date: "2026-06-01" };
+    if (companyLower.includes("cms duta solusi") && roleKey.includes("kontributor") && !exp.end_date) {
+      return { ...exp, role: polishedRole, end_date: "2026-06-01" };
     }
 
-    return exp;
+    return polishedRole !== exp.role ? { ...exp, role: polishedRole } : exp;
   });
 
   const hasPondok = experiences.some((exp) => exp.company.toLowerCase().includes("pondok"));
@@ -106,7 +147,29 @@ export function applyPortfolioUpdates(data: PortfolioData): PortfolioData {
 
   experiences.sort((a, b) => a.display_order - b.display_order);
 
-  const projects = [...data.projects];
+  const projects = data.projects
+    .filter(
+      (p) =>
+        !(
+          p.title.trim().toLowerCase() === "ai chat app" &&
+          !p.image_url &&
+          p.live_url === "https://example.com"
+        )
+    )
+    .map((p) => {
+      const polish = PROJECT_POLISH_MAP[p.title.trim().toLowerCase()];
+      if (!polish) return p;
+      return {
+        ...p,
+        title: polish.title ?? p.title,
+        description:
+          p.description.trim().toLowerCase() === "platform kasir dengan kualitas modern" ||
+          p.description.trim().toLowerCase().startsWith("dalam pengembangan kasirq")
+            ? (polish.description ?? p.description)
+            : p.description,
+      };
+    });
+
   const hasBiro = projects.some(
     (p) =>
       p.title.toLowerCase().includes("biro") ||
@@ -128,10 +191,30 @@ export function applyPortfolioUpdates(data: PortfolioData): PortfolioData {
 
   projects.sort((a, b) => a.display_order - b.display_order);
 
+  const skills = [...data.skills];
+  const toolsCount = skills.filter((s) => s.category.toLowerCase() === "tools").length;
+  if (toolsCount <= 1) {
+    for (const extra of EXTRA_TOOL_SKILLS) {
+      if (!skills.some((s) => s.name.toLowerCase() === extra.name.toLowerCase())) {
+        skills.push(extra);
+      }
+    }
+  }
+
+  const certificates = data.certificates.map((c) => {
+    const trimmed = c.issuer.trim();
+    if (trimmed.toLowerCase() === "coursera" && trimmed !== "Coursera") {
+      return { ...c, issuer: "Coursera" };
+    }
+    return c;
+  });
+
   return {
     ...data,
     profile,
     experiences,
     projects,
+    skills,
+    certificates,
   };
 }

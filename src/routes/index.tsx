@@ -494,7 +494,7 @@ function HomePage() {
               <div className="md:ml-14 bg-card/40 backdrop-blur-sm border border-white/20 rounded-xl p-4 md:p-6 group-hover:border-accent/50 group-hover:shadow-lg group-hover:shadow-accent/5 transition-all duration-500">
                 <h3 className="font-display text-lg md:text-3xl mb-0.5 text-primary group-hover:text-accent transition-colors duration-300"><Translate text={exp.role} /></h3>
                 <p className="text-accent mb-2 text-xs md:text-sm italic">{exp.company}</p>
-                <p className="text-muted-foreground text-xs md:text-sm leading-relaxed"><Translate text={exp.description} maxChars={130} /></p>
+                <p className="text-muted-foreground text-xs md:text-sm leading-relaxed"><Translate text={exp.description} maxChars={200} /></p>
               </div>
             </motion.div>
           ))}
